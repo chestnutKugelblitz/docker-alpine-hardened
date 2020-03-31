@@ -18,24 +18,18 @@ sed -i -r 's/^user:!:/user:x:/' /etc/shadow
 # Avoid error `Only root may specify -c or -f` when using
 # ForceCommand with `-f` option at non-root ssh login.
 # https://www.duosecurity.com/docs/duounix-faq#can-i-use-login_duo-to-protect-non-root-shared-accounts,-or-can-i-do-an-install-without-root-privileges?
-if [[ -f /usr/sbin/login_duo ]]; then
-  chmod u-s /usr/sbin/login_duo
-fi
+#chmod u-s /usr/sbin/login_duo
 
 # /etc/duo/login_duo.conf must be readable only by user 'user'.
-if [[ -f /etc/duo/login_duo.conf ]]; then
-  chown user:user /etc/duo/login_duo.conf
-  chmod 0400 /etc/duo/login_duo.conf
-fi
+#chown user:user /etc/duo/login_duo.conf
+#chmod 0400 /etc/duo/login_duo.conf
 
 # Ensure strict ownership and perms.
-if [[ -f /usr/bin/github_pubkeys ]]; then
-  chown root:root /usr/bin/github_pubkeys
-  chmod 0555 /usr/bin/github_pubkeys
-fi
+#chown root:root /usr/bin/github_pubkeys
+#chmod 0555 /usr/bin/github_pubkeys
 
 # Be informative after successful login.
-echo -e "\n\nHardened App container image built on $(date)." > /etc/motd
+echo -e "\n\nApp container image built on $(date)." > /etc/motd
 
 # Improve strength of diffie-hellman-group-exchange-sha256 (Custom DH with SHA2).
 # See https://stribika.github.io/2015/01/04/secure-secure-shell.html
@@ -58,7 +52,6 @@ rm -fr /etc/periodic
 
 # Remove all but a handful of admin commands.
 find /sbin /usr/sbin ! -type d \
-  -a ! -name login_duo \
   -a ! -name nologin \
   -a ! -name setup-proxy \
   -a ! -name sshd \
